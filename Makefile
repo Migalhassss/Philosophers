@@ -5,6 +5,7 @@ FILES	=	philo.c				\
 			check_arguments.c	\
 			init.c				\
 			routime.c			\
+			philo_status.c		\
 
 
 OBJS		=	$(FILES:.c=.o)
@@ -13,7 +14,7 @@ RM	= rm -f
 
 CC	= gcc
 
-CFLAGS	= -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS	= -Wall -Wextra -Werror -g -fsanitize=address
 
 
 all: $(NAME)

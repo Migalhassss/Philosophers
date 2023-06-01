@@ -77,7 +77,7 @@ int	check_is_numbers(char **av)
 	int	j;
 
 	i = 1;
-		while (av[i] != NULL)
+	while (av[i] != NULL)
 	{
 		j = 0;
 		while (av[i][j] != '\0')

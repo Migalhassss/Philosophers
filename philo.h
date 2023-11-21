@@ -32,6 +32,7 @@ typedef struct s_philo
 	pthread_mutex_t	*fork_left;
 	pthread_mutex_t	*fork_right;
 	pthread_mutex_t	can_eat;
+	pthread_mutex_t	can_die;
 }	t_philo;
 
 typedef struct s_general
@@ -44,9 +45,11 @@ typedef struct s_general
 	int				must_eat;
 	int				day_time;
 	int				is_dead;
+	int				philo_full;
 	pthread_mutex_t	*forks;
-	pthread_mutex_t	*can_die;
 	pthread_mutex_t	print;
+	pthread_mutex_t	is_dead_mutex;
+	pthread_mutex_t helper_mutex;
 	t_philo			*philo;
 }	t_general;
 
@@ -78,7 +81,8 @@ int		philo_is_dead(t_general *general, int id);
 
 /*-----------------------------routine.c---------------------------*/
 
-void	*routime(void *arg);
+void	supervisor(void	*philo_ptr);
+void	*routine(void *arg);
 void	print_status(t_general *general, int id, char c);
 void	plswork(t_general *general, int id);
 /*__________________________________________________________________*/

@@ -4,7 +4,8 @@ NAME			=	philo
 FILES	=	philo.c				\
 			check_arguments.c	\
 			init.c				\
-			routime.c			\
+			routine.c			\
+			supervisor.c		\
 			philo_status.c		\
 
 
@@ -12,9 +13,9 @@ OBJS		=	$(FILES:.c=.o)
 
 RM	= rm -f
 
-CC	= gcc
+CC	= cc
 
-CFLAGS	= -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS	= -Wall -Wextra -Werror -g -fsanitize=thread
 
 
 all: $(NAME)

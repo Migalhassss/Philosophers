@@ -39,20 +39,21 @@ void	start_threads(t_general *general)
 	i = 0;
 	threads = malloc(sizeof(pthread_t) * (*general).philos_nbr);
 	(*general).day_time = get_time();
+	(*general).helper = 0;
 	while (i < (*general).philos_nbr)
 	{
-		(*general).helper = i;
-		pthread_create(&threads[i], NULL, &routime, general);
+		pthread_create(&threads[i], NULL, &routine, general);
 		usleep(100);
 		i++;
 	}
+	supervisor(general);
 	i = 0;
 	while (i < (*general).philos_nbr)
 	{
 		pthread_join(threads[i], NULL);
 		i++;
 	}
-	if ((*general).must_eat != -1)
+	if ((*general).philo_full == (*general).philos_nbr)
 		printf("All philosophers have eaten %d times\n", (*general).must_eat);
 	free(threads);
 }
@@ -66,6 +67,7 @@ int	init_arguments(t_general *general, int ac, char **av)
 	(*general).die_time = ft_atoi(av[2]);
 	(*general).eat_time = ft_atoi(av[3]);
 	(*general).sleep_time = ft_atoi(av[4]);
+	(*general).philo_full = 0;
 	(*general).is_dead = 0;
 	if (ac == 6)
 		(*general).must_eat = ft_atoi(av[5]);
@@ -97,7 +99,9 @@ void	init_philos(t_general *general)
 		(*general).philo[i].is_sleeping = 0;
 		(*general).philo[i].is_thinking = 0;
 		pthread_mutex_init(&(*general).philo[i].can_eat, NULL);
+		pthread_mutex_init(&(*general).philo[i].can_die, NULL);
 		pthread_mutex_init(&(*general).print, NULL);
+		pthread_mutex_init(&(*general).helper_mutex, NULL);
 		i++;
 	}
 }

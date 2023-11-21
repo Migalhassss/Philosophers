@@ -32,14 +32,8 @@ void	print_status(t_general *general, int id, char c)
 
 void	plswork(t_general *general, int id)
 {
-	if (philo_is_dead(general, id) == 0)
-		return ;
-	pthread_mutex_lock(&(*general).print);
 	philo_take_fork(general, id);
 	philo_eat(general, id);
-	pthread_mutex_lock(&(*general).print);
-	if (philo_is_dead(general, id) == 0)
-		return ;
 	philo_sleep(general, id);
 	philo_think(general, id);
 	pthread_mutex_lock(&(*general).print);
@@ -49,36 +43,26 @@ void	plswork(t_general *general, int id)
 void	one_philo(t_general *general, int id)
 {
 	print_status(general, id, 'f');
-	(*general).philo[id].last_eat = 0;
+	(*general).philo[id].last_eat = get_time();
 	usleep((*general).die_time * 1000);
 	philo_is_dead(general, id);
 }
 
-void	*routime(void *arg)
+void	*routine(void *arg)
 {
 	t_general	*general;
 	int			id;
 
 	general = (t_general *)arg;
+	pthread_mutex_lock(&(*general).helper_mutex);
 	id = (*general).helper;
+	(*general).helper++;
+	pthread_mutex_unlock(&(*general).helper_mutex);
 	if ((*general).philos_nbr == 1)
 		one_philo(general, id);
-	if ((*general).must_eat != -1)
-	{	
-		pthread_mutex_lock(&(*general).print);
-		while ((*general).philo[id].eat_count < (*general).must_eat
-			&& !(*general).is_dead)
-			plswork(general, id);
-		pthread_mutex_unlock(&(*general).print);
-		return (NULL);
-	}
-	else
-	{
-		pthread_mutex_lock(&(*general).print);
-		while (!(*general).is_dead)
-			plswork(general, id);
-		pthread_mutex_unlock(&(*general).print);
-		return (NULL);
-	}
+	pthread_mutex_lock(&(*general).print);
+	while (!(*general).is_dead)
+		plswork(general, id);
+	pthread_mutex_unlock(&(*general).print);
 	return (NULL);
 }

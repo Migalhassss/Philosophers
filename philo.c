@@ -23,9 +23,8 @@ void	destroy_mutex(t_general *general)
 	int	i;
 
 	i = 0;
-	while (i < general->philos_nbr)
+	while (i > general->philos_nbr)
 	{
-		pthread_mutex_destroy(&general->forks[i]);
 		pthread_mutex_destroy(&general->philo[i].can_eat);
 		pthread_mutex_destroy(&general->print);
 		i++;

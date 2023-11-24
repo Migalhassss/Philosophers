@@ -28,6 +28,7 @@ typedef struct s_philo
 	int				is_sleeping;
 	int				is_thinking;
 	int				is_dead;
+	int				is_full;
 	int				eat_count;
 	pthread_mutex_t	*fork_left;
 	pthread_mutex_t	*fork_right;
@@ -48,8 +49,7 @@ typedef struct s_general
 	int				philo_full;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print;
-	pthread_mutex_t	is_dead_mutex;
-	pthread_mutex_t helper_mutex;
+	pthread_mutex_t	helper_mutex;
 	t_philo			*philo;
 }	t_general;
 

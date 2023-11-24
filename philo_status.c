@@ -28,9 +28,18 @@ int	philo_is_dead(t_general *general, int id)
 void	philo_take_fork(t_general *general, int id)
 {
 	pthread_mutex_unlock(&(*general).print);
-	pthread_mutex_lock((*general).philo[id].fork_left);
-	print_status(general, id, 'f');
-	pthread_mutex_lock((*general).philo[id].fork_right);
+	if (id % 2 == 0)
+	{
+		pthread_mutex_lock((*general).philo[id].fork_right);
+		print_status(general, id, 'f');
+		pthread_mutex_lock((*general).philo[id].fork_left);
+	}
+	else
+	{
+		pthread_mutex_lock((*general).philo[id].fork_left);
+		print_status(general, id, 'f');
+		pthread_mutex_lock((*general).philo[id].fork_right);
+	}
 	print_status(general, id, 'f');
 }
 
@@ -39,7 +48,7 @@ void	philo_eat(t_general *general, int id)
 	pthread_mutex_lock(&(*general).philo[id].can_eat);
 	(*general).philo[id].last_eat = get_time();
 	pthread_mutex_unlock(&(*general).philo[id].can_eat);
-	usleep((*general).eat_time * 700);
+	usleep((*general).eat_time * 1000);
 	print_status(general, id, 'e');
 	pthread_mutex_lock(&(*general).print);
 	(*general).philo[id].eat_count++;
@@ -51,7 +60,7 @@ void	philo_eat(t_general *general, int id)
 void	philo_sleep(t_general *general, int id)
 {
 	print_status(general, id, 's');
-	usleep((*general).sleep_time * 900);
+	usleep((*general).sleep_time * 1000);
 }
 
 void	philo_think(t_general *general, int id)

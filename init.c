@@ -98,6 +98,7 @@ void	init_philos(t_general *general)
 		(*general).philo[i].is_eating = 0;
 		(*general).philo[i].is_sleeping = 0;
 		(*general).philo[i].is_thinking = 0;
+		(*general).philo[i].is_full = 0;
 		pthread_mutex_init(&(*general).philo[i].can_eat, NULL);
 		pthread_mutex_init(&(*general).philo[i].can_die, NULL);
 		pthread_mutex_init(&(*general).print, NULL);

@@ -32,7 +32,6 @@ typedef struct s_philo
 	int				eat_count;
 	pthread_mutex_t	*fork_left;
 	pthread_mutex_t	*fork_right;
-	pthread_mutex_t	can_eat;
 	pthread_mutex_t	can_die;
 }	t_philo;
 

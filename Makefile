@@ -15,7 +15,7 @@ RM	= rm -f
 
 CC	= cc
 
-CFLAGS	= -Wall -Wextra -Werror -pthread -g #-fsanitize=thread
+CFLAGS	= -Wall -Wextra -Werror -pthread -g -fsanitize=thread
 
 
 all: $(NAME)

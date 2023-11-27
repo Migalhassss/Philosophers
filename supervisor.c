@@ -32,13 +32,12 @@ int	all_philos_full(t_general *philo, int i)
 int	is_dead(t_general	*philo, int i)
 {
 	if (get_time() - philo->philo[i].last_eat > philo->die_time
-		&& philo->philo[i].is_eating != 1 && philo->philo[i].last_eat != -1)
+		&& philo->philo[i].last_eat != -1)
 	{
 		philo->is_dead = 1;
 		pthread_mutex_lock(&philo->print);
 		printf("%d %d died\n", get_time() - philo->day_time, philo->philo[i].id);
 		pthread_mutex_unlock(&philo->print);
-		pthread_mutex_unlock(&philo->philo[i].can_eat);
 		pthread_mutex_unlock(&philo->philo[i].can_die);
 		return (1);
 	}
@@ -59,10 +58,8 @@ void	supervisor(void	*philo_ptr)
 		while (i < philo->philos_nbr)
 		{
 			pthread_mutex_lock(&philo->philo[i].can_die);
-			pthread_mutex_lock(&philo->philo[i].can_eat);
 			if (is_dead(philo, i) == 1)
 				break ;
-			pthread_mutex_unlock(&philo->philo[i].can_eat);
 			pthread_mutex_unlock(&philo->philo[i].can_die);
 			pthread_mutex_lock(&philo->print);
 			if (all_philos_full(philo, i) == 1)

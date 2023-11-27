@@ -28,28 +28,20 @@ int	philo_is_dead(t_general *general, int id)
 void	philo_take_fork(t_general *general, int id)
 {
 	pthread_mutex_unlock(&(*general).print);
-	if (id % 2 == 0)
-	{
-		pthread_mutex_lock((*general).philo[id].fork_right);
-		print_status(general, id, 'f');
-		pthread_mutex_lock((*general).philo[id].fork_left);
-	}
-	else
-	{
-		pthread_mutex_lock((*general).philo[id].fork_left);
-		print_status(general, id, 'f');
-		pthread_mutex_lock((*general).philo[id].fork_right);
-	}
+
+	pthread_mutex_lock((*general).philo[id].fork_left);
+	pthread_mutex_lock((*general).philo[id].fork_right);
+	print_status(general, id, 'f');
 	print_status(general, id, 'f');
 }
 
 void	philo_eat(t_general *general, int id)
 {
-	pthread_mutex_lock(&(*general).philo[id].can_eat);
-	(*general).philo[id].last_eat = get_time();
-	pthread_mutex_unlock(&(*general).philo[id].can_eat);
-	usleep((*general).eat_time * 1000);
+	pthread_mutex_lock(&(*general).philo[id].can_die);
 	print_status(general, id, 'e');
+	(*general).philo[id].last_eat = get_time();
+	pthread_mutex_unlock(&(*general).philo[id].can_die);
+	usleep((*general).eat_time * 1000);
 	pthread_mutex_lock(&(*general).print);
 	(*general).philo[id].eat_count++;
 	pthread_mutex_unlock(&(*general).print);
